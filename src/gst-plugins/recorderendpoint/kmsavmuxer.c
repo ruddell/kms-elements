@@ -155,21 +155,8 @@ kms_av_muxer_create_muxer (KmsAVMuxer * self)
       return gst_element_factory_make ("webmmux", NULL);
     case KMS_RECORDING_PROFILE_MP4:
     case KMS_RECORDING_PROFILE_MP4_VIDEO_ONLY:
-    case KMS_RECORDING_PROFILE_MP4_AUDIO_ONLY:{
-      GstElement *mux = gst_element_factory_make ("mp4mux", NULL);
-      GstElementFactory *file_sink_factory =
-          gst_element_factory_find ("filesink");
-      GstElementFactory *sink_factory =
-          gst_element_get_factory (self->priv->sink);
-
-      if ((gst_element_factory_get_element_type (sink_factory) !=
-              gst_element_factory_get_element_type (file_sink_factory))) {
-        g_object_set (mux, "faststart", TRUE, NULL);
-      }
-
-      g_object_unref (file_sink_factory);
-      return mux;
-    }
+    case KMS_RECORDING_PROFILE_MP4_AUDIO_ONLY:
+      return gst_element_factory_make ("matroskamux", NULL);
     case KMS_RECORDING_PROFILE_JPEG_VIDEO_ONLY:
       return gst_element_factory_make ("jifmux", NULL);
     default:
